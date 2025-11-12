@@ -1,6 +1,6 @@
 # IST270_Codespace_Template
 
-## Part 2: Student Guide (For Your Syllabus or Assignment)
+## Part 2: Student Guide (For Your Assignment)
 
 Below is a guide you can follow directly to begin and work with your assignment environment.
 
