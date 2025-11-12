@@ -1,7 +1,10 @@
-# Start from a base Microsoft-provided image. 
-# This one includes Python, Node.js, and other common tools.
-# You can find many other options to start from.
+# Start from a base Microsoft-provided image
 FROM mcr.microsoft.com/devcontainers/universal:2
+
+# --- ADD THIS LINE ---
+# Create the workspace directory in advance
+# This prevents a race condition on startup
+RUN mkdir -p /workspace
 
 # You can add any other tools your students need here.
 # For example, to install Python libraries:
