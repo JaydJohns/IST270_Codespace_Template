@@ -1,27 +1,21 @@
 {
-  "name": "PFW IST Database Assignment",
-  // Tells Codespaces to use your docker-compose file
-  "dockerComposeFile": "docker-compose.yml",
-  
-  // Tells Codespaces which service is the main one (the 'app' service)
-  "service": "app",
-
-  // This is the folder where the student's terminal will open
-  "workspaceFolder": "/workspace",
-
-  // --- This is the part you asked about ---
-  // A list of VS Code extensions to auto-install for the student
+  "name": "Codespace with PostgreSQL",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "forwardPorts": [5432],
+  "containerEnv": {
+    "POSTGRES_PASSWORD": "postgres",
+    "POSTGRES_DB": "appdb"
+  },
+  "postCreateCommand": "bash .devcontainer/scripts/setup-postgres.sh",
+  "postStartCommand": "bash .devcontainer/scripts/start-postgres.sh",
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-postgresql.simple-postgresql", // The PostgreSQL extension
-        "ms-python.python",                // Example: Python extension
-        "ritwickdey.liveserver"            // Example: Live Server
+        "ms-ossdata.vscode-postgresql"
       ]
     }
-  },
-
-  // This forwards port 5432 from the container to the outside world
-  // This is good practice, though not strictly needed for the VS Code extension
-  "forwardPorts": [5432]
+  }
 }
