@@ -1,10 +1,11 @@
 # Start from a base Microsoft-provided image
 FROM mcr.microsoft.com/devcontainers/universal:2
 
-# --- ADD THIS LINE ---
-# Create the workspace directory in advance
-# This prevents a race condition on startup
-RUN mkdir -p /workspace
+# --- UPDATED FIX ---
+# Create the directory AND change ownership to the non-root user
+# $_REMOTE_USER is a built-in variable in this image (usually 'vscode')
+RUN mkdir -p /workspace \
+    && chown -R $_REMOTE_USER:$_REMOTE_USER /workspace
 
 # You can add any other tools your students need here.
 # For example, to install Python libraries:
