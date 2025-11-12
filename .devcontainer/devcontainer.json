@@ -1,0 +1,27 @@
+{
+  "name": "PFW IST Database Assignment",
+  // Tells Codespaces to use your docker-compose file
+  "dockerComposeFile": "docker-compose.yml",
+  
+  // Tells Codespaces which service is the main one (the 'app' service)
+  "service": "app",
+
+  // This is the folder where the student's terminal will open
+  "workspaceFolder": "/workspace",
+
+  // --- This is the part you asked about ---
+  // A list of VS Code extensions to auto-install for the student
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-postgresql.simple-postgresql", // The PostgreSQL extension
+        "ms-python.python",                // Example: Python extension
+        "ritwickdey.liveserver"            // Example: Live Server
+      ]
+    }
+  },
+
+  // This forwards port 5432 from the container to the outside world
+  // This is good practice, though not strictly needed for the VS Code extension
+  "forwardPorts": [5432]
+}

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # This is the main container where your students will work (installs Python, Node, etc.)
+  app:
+    # We build this from a Dockerfile (see next step)
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # This command keeps the container running
+    command: sleep infinity
+
+    # This links the app container to the db container
+    depends_on:
+      - db
+
+    # This makes the "app" container wait until the "db" is healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -h db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    # This mounts your repository code into the container
+    volumes:
+      - ..:/workspace:cached
+
+  # This is the PostgreSQL database container
+  db:
+    image: postgres:16-alpine  # You can pin this to any version
+    restart: unless-stopped
+    
+    # This creates a named volume to persist data between sessions
+    # This is CRITICAL for students so they don't lose their work
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    # These are the credentials students will use.
+    # Keep them simple for an academic environment.
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: assignment_db
+
+    # Expose port 5432 *within* the container network
+    ports:
+      - 5432:5432
+
+# This defines the named volume for data persistence
+volumes:
+  postgres-data:
