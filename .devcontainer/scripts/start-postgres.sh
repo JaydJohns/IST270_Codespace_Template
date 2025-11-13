@@ -6,17 +6,36 @@ POSTGRES_DB="${POSTGRES_DB:-appdb}"
 
 echo "[start-postgres] Starting PostgreSQL service/cluster..."
 
-# Try starting via pg_ctlcluster if available (Debian/Ubuntu)
+start_cluster() {
+  local version="$1"
+  local name="$2"
+  echo "[start-postgres]   -> starting cluster ${version}/${name}"
+  sudo pg_ctlcluster --skip-systemctl-redirect "${version}" "${name}" start || true
+}
+
 if command -v pg_lsclusters >/dev/null 2>&1; then
-  LINE=$(pg_lsclusters | awk 'NR==2{print $1, $2}') || true
-  if [[ -n "${LINE:-}" ]]; then
-    # shellcheck disable=SC2086
-    sudo pg_ctlcluster --skip-systemctl-redirect $LINE start || true
+  CLUSTERS=()
+  while read -r ver name _; do
+    [[ -n "${ver:-}" && -n "${name:-}" ]] && CLUSTERS+=("${ver}:${name}")
+  done < <(pg_lsclusters --no-header 2>/dev/null || true)
+
+  if [[ ${#CLUSTERS[@]} -eq 0 ]]; then
+    echo "[start-postgres] No clusters found; creating default one."
+    default_ver=$(psql -V 2>/dev/null | awk '{print $3}' | cut -d. -f1 || true)
+    default_ver=${default_ver:-16}
+    sudo pg_createcluster "${default_ver}" main --start || true
+  else
+    for cluster in "${CLUSTERS[@]}"; do
+      start_cluster "${cluster%%:*}" "${cluster##*:}"
+    done
   fi
+else
+  echo "[start-postgres] pg_lsclusters not available; cannot start PostgreSQL automatically."
 fi
 
-# Fallback to service command
-sudo service postgresql start || true
+if [[ ! -d /run/systemd/system ]]; then
+  echo "[start-postgres] Notice: systemd/service start skipped (not available in this container)."
+fi
 
 echo "[start-postgres] Waiting for server to become ready..."
 for i in {1..30}; do
