@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SETUP_SCRIPT="${ROOT_DIR}/.devcontainer/scripts/setup-postgres.sh"
 START_SCRIPT="${ROOT_DIR}/.devcontainer/scripts/start-postgres.sh"
-PG_EXTENSION="ms-ossdata.vscode-postgresql"
+PG_EXTENSION="ms-ossdata.vscode-pgsql"
 
 echo "IST270 Codespace manual database bootstrap"
 echo "-------------------------------------------"

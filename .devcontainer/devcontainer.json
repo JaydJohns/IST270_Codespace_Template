@@ -12,7 +12,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-ossdata.vscode-postgresql"
+        "ms-ossdata.vscode-pgsql"
       ]
     }
   }
