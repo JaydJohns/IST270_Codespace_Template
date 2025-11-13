@@ -2,19 +2,15 @@
   "name": "Codespace with PostgreSQL",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {},
-    "ghcr.io/devcontainers/features/postgres:1": {
-      "version": "16",
-      "password": "postgres",
-      "user": "postgres",
-      "db": "appdb"
-    }
+    "ghcr.io/devcontainers/features/common-utils:2": {}
   },
   "forwardPorts": [5432],
   "containerEnv": {
     "POSTGRES_PASSWORD": "postgres",
     "POSTGRES_DB": "appdb"
   },
+  "postCreateCommand": "bash .devcontainer/scripts/setup-postgres.sh",
+  "postStartCommand": "bash .devcontainer/scripts/start-postgres.sh",
   "customizations": {
     "vscode": {
       "extensions": [

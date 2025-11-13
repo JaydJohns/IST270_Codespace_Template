@@ -17,7 +17,7 @@ if command -v pg_lsclusters >/dev/null 2>&1; then
   CLUSTERS=()
   while read -r ver name _; do
     [[ -n "${ver:-}" && -n "${name:-}" ]] && CLUSTERS+=("${ver}:${name}")
-  done < <(pg_lsclusters --no-header 2>/dev/null || true)
+  done < <(pg_lsclusters 2>/dev/null | awk 'NR>1 {print $1 ":" $2}' || true)
 
   if [[ ${#CLUSTERS[@]} -eq 0 ]]; then
     echo "[start-postgres] No clusters found; creating default one."
