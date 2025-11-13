@@ -6,11 +6,31 @@ POSTGRES_DB="${POSTGRES_DB:-appdb}"
 
 echo "[start-postgres] Starting PostgreSQL service/cluster..."
 
+if ! command -v sudo >/dev/null 2>&1; then
+  echo "[start-postgres] Error: sudo is required inside the container."
+  exit 1
+fi
+
+if ! sudo -n true 2>/dev/null; then
+  echo "[start-postgres] Error: sudo requires a password in this environment. Please enable passwordless sudo or run the script as root."
+  exit 1
+fi
+
+SUDO="sudo -n"
+
+run_root() {
+  $SUDO "$@"
+}
+
+run_postgres() {
+  $SUDO -u postgres "$@"
+}
+
 start_cluster() {
   local version="$1"
   local name="$2"
   echo "[start-postgres]   -> starting cluster ${version}/${name}"
-  sudo pg_ctlcluster --skip-systemctl-redirect "${version}" "${name}" start || true
+  run_root pg_ctlcluster --skip-systemctl-redirect "${version}" "${name}" start || true
 }
 
 if command -v pg_lsclusters >/dev/null 2>&1; then
@@ -20,7 +40,7 @@ if command -v pg_lsclusters >/dev/null 2>&1; then
     echo "[start-postgres] No clusters found; creating default one."
     default_ver=$(psql -V 2>/dev/null | awk '{print $3}' | cut -d. -f1 || true)
     default_ver=${default_ver:-16}
-    sudo pg_createcluster "${default_ver}" main --start || true
+    run_root pg_createcluster "${default_ver}" main --start || true
   else
     for cluster in "${CLUSTERS[@]}"; do
       ver="${cluster%%:*}"
@@ -38,21 +58,21 @@ fi
 
 echo "[start-postgres] Waiting for server to become ready..."
 for i in {1..30}; do
-  if sudo -u postgres pg_isready -q; then
+  if run_postgres pg_isready -q; then
     break
   fi
   sleep 1
 done
 
-if ! sudo -u postgres pg_isready -q; then
+if ! run_postgres pg_isready -q; then
   echo "[start-postgres] Warning: PostgreSQL did not report ready state; continuing anyway."
 fi
 
 echo "[start-postgres] Setting default postgres user password..."
-sudo -u postgres psql -v ON_ERROR_STOP=1 -tAc "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" || true
+run_postgres psql -v ON_ERROR_STOP=1 -tAc "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" || true
 
 echo "[start-postgres] Ensuring database '${POSTGRES_DB}' exists..."
-sudo -u postgres psql -v ON_ERROR_STOP=1 -tAc "SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'" | grep -q 1 || \
-  sudo -u postgres createdb "${POSTGRES_DB}" || true
+run_postgres psql -v ON_ERROR_STOP=1 -tAc "SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'" | grep -q 1 || \
+  run_postgres createdb "${POSTGRES_DB}" || true
 
 echo "[start-postgres] Done. Connection string example: postgres://postgres:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
