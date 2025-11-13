@@ -5,18 +5,14 @@
 #
 
 echo "🚀 Starting environment setup..."
-echo "Waiting for the PostgreSQL database (service name 'db') to be ready."
+echo "Waiting for the local PostgreSQL database to be ready."
 echo "This may take a moment..."
-
-# We will use the 'pg_isready' command, which is part of the postgresql-client.
-# First, let's make sure that tool is installed in our app container.
-sudo apt-get update > /dev/null && sudo apt-get install -y postgresql-client > /dev/null
 
 echo "Checking database status..."
 
 # Loop until pg_isready returns 0 (success)
-# We point it to the host 'db' (the name of our database service)
-until pg_isready -U postgres -h db -q; do
+# We point it to localhost because Postgres runs inside this Codespace.
+until pg_isready -U postgres -h localhost -q; do
   printf "."
   sleep 1
 done
@@ -24,10 +20,10 @@ done
 echo "\n\n✅ Success! The PostgreSQL database is running and ready for connections."
 echo ""
 echo "--- Connection Details ---"
-echo "Host:     db"
-echo "Database: assignment_db"
+echo "Host:     localhost"
+echo "Database: appdb"
 echo "User:     postgres"
-echo "Password: password"
+echo "Password: postgres"
 echo "Port:     5432"
 echo "--------------------------"
 echo "\nYou can now use the VS Code PostgreSQL extension (the elephant icon) to connect."

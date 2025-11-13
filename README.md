@@ -18,14 +18,13 @@ Your Codespace is a full VS Code environment with the PostgreSQL extension pre-i
 2. In the VS Code Activity Bar (far left), click the PostgreSQL (elephant) icon.
 3. In the PostgreSQL extension panel, click the **+** (plus) icon to add a new connection.
 4. A sequence of input boxes will appear at the top. Enter the following values (press Enter after each):
-	 - **Hostname:** `db`  
-		 *Explanation:* `db` is the internal service name from `docker-compose.yml`.
-	 - **Database:** `assignment_db`
+	 - **Hostname:** `localhost`
+	 - **Database:** `appdb`
 	 - **User:** `postgres`
-	 - **Password:** `password`
+	 - **Password:** `postgres`
 	 - **Port:** `5432`
 	 - **Show just this database?** Either choice (Yes/No) is fine.
-5. After confirmation, you should see `assignment_db` in the side panel. You can right-click the database (or any table) to run queries, or create a new `.sql` file to write queries manually.
+5. After confirmation, you should see `appdb` in the side panel. You can right-click the database (or any table) to run queries, or create a new `.sql` file to write queries manually.
 
 ### How to Run SQL Files
 1. Create a new file, e.g. `query.sql`.
@@ -36,4 +35,3 @@ Your Codespace is a full VS Code environment with the PostgreSQL extension pre-i
 
 ### Persistence
 Your database data is persistent across sessions. If you stop your Codespace and return later, your tables and data will still be there.
-
