@@ -9,10 +9,17 @@ Below is a guide you can follow directly to begin and work with your assignment 
 2. Click the green **< > Code** button.
 3. Select the **Codespaces** tab.
 4. Click **Create codespace on main** (or on your assignment branch).
-5. Be patient: the first build takes 2–3 minutes. It is installing a full PostgreSQL database server just for you.
+5. Be patient: the first build takes 2–3 minutes while the container image downloads.
+6. After the Codespace opens, run the manual bootstrap script from the built-in terminal:
+
+```bash
+bash scripts/bootstrap-postgres.sh
+```
+
+Follow the prompts; the script installs PostgreSQL, starts the service, and ensures the VS Code PostgreSQL extension is available.
 
 ### How to Connect to Your Database
-Your Codespace is a full VS Code environment with the PostgreSQL extension pre-installed.
+Your Codespace is a full VS Code environment with the PostgreSQL extension (installed by the bootstrap script) available.
 
 1. After the Codespace loads, wait ~15–30 seconds for the database service to finish starting in the background.
 2. In the VS Code Activity Bar (far left), click the PostgreSQL (elephant) icon.
@@ -35,3 +42,8 @@ Your Codespace is a full VS Code environment with the PostgreSQL extension pre-i
 
 ### Persistence
 Your database data is persistent across sessions. If you stop your Codespace and return later, your tables and data will still be there.
+
+### Manual Bootstrap Script Details
+- Script path: `scripts/bootstrap-postgres.sh`
+- Re-run it anytime you need to reinstall PostgreSQL or reset the default credentials (`postgres` / `postgres`, database `appdb`).
+- The script is idempotent: it skips work that has already been completed but will always ensure the database service is running before it exits.

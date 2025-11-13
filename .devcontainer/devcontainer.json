@@ -9,8 +9,6 @@
     "POSTGRES_PASSWORD": "postgres",
     "POSTGRES_DB": "appdb"
   },
-  "postCreateCommand": "bash .devcontainer/scripts/setup-postgres.sh",
-  "postStartCommand": "bash .devcontainer/scripts/start-postgres.sh",
   "customizations": {
     "vscode": {
       "extensions": [
