@@ -1,18 +1,18 @@
 {
-  "name": "Codespace with PostgreSQL",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "name": "Database Course - PostgreSQL",
+  "image": "mcr.microsoft.com/devcontainers/universal:latest",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {}
+    "ghcr.io/devcontainers/features/postgres:1": {
+      "version": "15"
+    }
   },
-  "forwardPorts": [5432],
-  "containerEnv": {
-    "POSTGRES_PASSWORD": "postgres",
-    "POSTGRES_DB": "appdb"
-  },
+  "remoteUser": "codespace",
+  "postCreateCommand": "sudo service postgresql start",
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-ossdata.vscode-pgsql"
+        "ms-vscode.sql-database-editor-preview",
+        "cweijan.vscode-postgresql-client2"
       ]
     }
   }
