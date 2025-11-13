@@ -14,10 +14,7 @@ start_cluster() {
 }
 
 if command -v pg_lsclusters >/dev/null 2>&1; then
-  CLUSTERS=()
-  while read -r ver name _; do
-    [[ -n "${ver:-}" && -n "${name:-}" ]] && CLUSTERS+=("${ver}:${name}")
-  done < <(pg_lsclusters 2>/dev/null | awk 'NR>1 {print $1 ":" $2}' || true)
+  mapfile -t CLUSTERS < <(pg_lsclusters 2>/dev/null | awk 'NR>1 {print $1 ":" $2}' || true)
 
   if [[ ${#CLUSTERS[@]} -eq 0 ]]; then
     echo "[start-postgres] No clusters found; creating default one."
@@ -26,7 +23,9 @@ if command -v pg_lsclusters >/dev/null 2>&1; then
     sudo pg_createcluster "${default_ver}" main --start || true
   else
     for cluster in "${CLUSTERS[@]}"; do
-      start_cluster "${cluster%%:*}" "${cluster##*:}"
+      ver="${cluster%%:*}"
+      name="${cluster##*:}"
+      [[ -n "${ver}" && -n "${name}" ]] && start_cluster "${ver}" "${name}"
     done
   fi
 else
