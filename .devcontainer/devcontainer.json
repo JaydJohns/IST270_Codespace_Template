@@ -3,8 +3,10 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-ossdata.vscode-pgsql"
+        "ms-vscode.sql-database-editor-preview",
+        "cweijan.vscode-postgresql-client2"
       ]
     }
-  }
+  },
+  "postCreateCommand": "sudo sh -c 'echo \"codespace ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers.d/codespace'"
 }
