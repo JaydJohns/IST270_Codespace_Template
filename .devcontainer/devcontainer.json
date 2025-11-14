@@ -1,3 +1,11 @@
 {
-  "name": "Database Course"
+  "name": "Database Course - PostgreSQL",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.sql-database-editor-preview",
+        "cweijan.vscode-postgresql-client2"
+      ]
+    }
+  }
 }
