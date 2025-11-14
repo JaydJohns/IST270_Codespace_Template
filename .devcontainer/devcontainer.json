@@ -1,13 +1,3 @@
 {
-  "name": "Database Course - PostgreSQL",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "remoteUser": "codespace",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-vscode.sql-database-editor-preview",
-        "cweijan.vscode-postgresql-client2"
-      ]
-    }
-  }
+  "name": "Database Course"
 }
