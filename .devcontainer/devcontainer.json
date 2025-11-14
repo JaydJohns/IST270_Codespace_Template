@@ -9,5 +9,5 @@
       ]
     }
   },
-  "postCreateCommand": "sudo sh -c 'echo \"codespace ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers.d/codespace' && sudo service postgresql start && sudo -u postgres psql -c \"ALTER USER postgres WITH PASSWORD 'postgres';\""
+  "postCreateCommand": "bash .devcontainer/setup.sh"
 }
