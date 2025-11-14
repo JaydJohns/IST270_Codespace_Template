@@ -4,9 +4,10 @@
     "vscode": {
       "extensions": [
         "ms-vscode.sql-database-editor-preview",
-        "cweijan.vscode-postgresql-client2"
+        "cweijan.vscode-postgresql-client2",
+        "ms-ossdata.vscode-pgsql"
       ]
     }
   },
-  "postCreateCommand": "sudo sh -c 'echo \"codespace ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers.d/codespace'"
+  "postCreateCommand": "sudo sh -c 'echo \"codespace ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers.d/codespace' && sudo service postgresql start && sudo -u postgres psql -c \"ALTER USER postgres WITH PASSWORD 'postgres';\""
 }
