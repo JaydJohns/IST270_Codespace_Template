@@ -3,6 +3,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "ms-vscode.sql-database-editor-preview",
+        "cweijan.vscode-postgresql-client2",
         "ms-ossdata.vscode-pgsql"
       ]
     }
